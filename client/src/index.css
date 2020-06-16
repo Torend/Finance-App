@@ -1,0 +1,15 @@
+body {
+  margin: 0;
+  padding: 0;
+  font-family: sans-serif;
+}
+
+form{
+  padding: 20px;
+  width: 75%;
+  margin-top: 20px;
+}
+
+form button, form h5{
+  margin: 20px 0;
+}
