@@ -4,11 +4,16 @@ import { Redirect } from "react-router-dom";
 import firebase from "../../config/firebaseConfig";
 import StockTable from "./TableStock/StockTable";
 import PieChart from "./StockPieGraph";
-import StockGraph from "./StockGraph";
+import SalesRecord from "./SalesRecord";
 import ExchangeRateBar from "./ExchangeRateBar";
+import SalesTable from "./TableSales/SalesTable";
 
 class Dashboard extends Component {
-  state = { stockList: [] };
+  state = {
+    stockList: [],
+    salesRecord: [],
+    sellState: null 
+  };
 
   componentDidMount() {
     const db = firebase.firestore();
@@ -23,25 +28,50 @@ class Dashboard extends Component {
             stocks.push(doc.data());
           });
           this.setState({ stockList: stocks });
-        } else {
-          console.log("No such document!");
         }
+        else
+            this.setState({ stockList: []});
+      })
+      .catch(function (error) {
+        console.log("Error getting document: ", error);
+      });
+
+      db.collection("usersInfo")
+      .doc(this.props.auth.uid)
+      .collection("salesRecord")
+      .get()
+      .then((querySnapshot) => {
+        if (querySnapshot.size > 0) {
+          let sales = [];
+          querySnapshot.forEach((doc) => {
+            sales.push(doc.data());
+          });
+          this.setState({ salesRecord: sales });
+        }
+        else
+            this.setState({ salesRecord: []});
       })
       .catch(function (error) {
         console.log("Error getting document: ", error);
       });
   }
 
+  componentDidUpdate(prevProps){
+    if(prevProps.sellState !== this.props.sellState){
+       this.componentDidMount()
+    }
+}
+
   render() {
     const { auth } = this.props;
     if (!auth.uid) return <Redirect to="/signin" />;
     return (
-      <div class="overflow-hidden" style={{ marginLeft: 250 }}>
+      <div class="overflow-hidden" style={{ marginLeft: 0 }}>
         <div class="d-flex justify-content-center">
-          <div class="d-md-inline-flex">
+          <div class="d-md-inline-flex" style={{marginLeft: -250}}>
             <StockTable stockList={this.state.stockList} />
           </div>
-          <div class="d-md-inline-flex">
+          <div class="d-md-inline-flex" style={{position: 'relative', left: 100}}>
             <ExchangeRateBar />
           </div>
         </div>
@@ -49,13 +79,15 @@ class Dashboard extends Component {
           class="d-flex justify-content-center"
           style={{ marginBottom: 100 }}
         >
-          <div class="d-md-inline-flex">
-            <StockGraph stockList={[]} />
-          </div>
-          <div class="d-md-inline-flex" style={{ marginLeft: 75 }}>
+          <div class="d-md-inline-flex" >
             <PieChart stockList={this.state.stockList} />
           </div>
-          <div class="col-2"></div>
+          <div class="d-md-inline-flex" style={{ marginLeft: 25 }}>
+            <SalesTable salesRecord={this.state.salesRecord} />
+          </div>        
+          <div class="d-md-inline-flex" style={{ marginLeft: 25 }}>
+            <SalesRecord salesRecord={this.state.salesRecord} />
+          </div>
         </div>
       </div>
     );
@@ -65,15 +97,8 @@ class Dashboard extends Component {
 const mapStateToProps = (state) => {
   return {
     auth: state.firebase.auth,
+    sellState: state.stock.sellState
   };
 };
 
 export default connect(mapStateToProps)(Dashboard);
-
-var styles = `
-
-`;
-var styleSheet = document.createElement("style");
-styleSheet.type = "text/css";
-styleSheet.innerText = styles;
-document.head.appendChild(styleSheet);

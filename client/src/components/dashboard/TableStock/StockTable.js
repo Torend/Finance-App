@@ -19,13 +19,14 @@ class StockTable extends Component {
             style={{ height: 325, background: "white", 
             display : "flex",
             alignItems : "center",
+            width:"93.5%",
             justifyContent: "center", }}
-            className="blur-box text-center"
+            className="blur-box-table"
           >
             <div style={{color: "gray"}}>
               <i
                 className="material-icons prefix"
-                style={{ fontSize: "35px" }}
+                style={{ fontSize: "50px", position: "relative", top: 0, left: 78 }}
               >
                 timeline
               </i>
@@ -34,10 +35,10 @@ class StockTable extends Component {
           </div>
         ) : (
           <div
-            style={{display: 'block', overflow: "auto", width:"75%", background: "white" }}
+            style={{display: 'block', overflow: "auto", width:"93.5%", background: "white" }}
             className="blur-box-table"
           >
-            <table class="table table-hover">
+            <table class=" centered table-hover">
               <thead>
                 <tr>
                   <th>#</th>
@@ -49,15 +50,15 @@ class StockTable extends Component {
 
                   <th>Change %</th>
                   <th>Current price</th>
+                  <th></th>
                 </tr>
               </thead>
               <tbody>
                 {this.props.stockList.map((stock, i) => {
                   return <StockTableRow key={i} stock={stock} id={i+1} />;
                 })}
-                
-              </tbody>
-              <TotalTableRow stockList={this.props.stockList}/>
+                <TotalTableRow stockList={this.props.stockList} />
+              </tbody>              
             </table>
           </div>
         )}
@@ -69,6 +70,7 @@ class StockTable extends Component {
 const mapStateToProps = (state) => {
   return {
     auth: state.firebase.auth,
+    sellState: state.stock.sellState
   };
 };
 
@@ -79,7 +81,6 @@ var styles = `
   box-shadow: 0 2px 4px -2px rgba(0,0,0,0.4);
   max-height: 325px;
   margin-top: 50px;
-
 },
 .table-style {
   position: absolute;

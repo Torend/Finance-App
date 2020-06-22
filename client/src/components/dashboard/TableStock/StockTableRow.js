@@ -43,7 +43,9 @@ class StockTableRow extends Component {
     const balance = this.balance();
     const returnRate = this.returnRate();
     const color = balance > 0 ? "green" : "red";
-    const color_change = parseInt(this.state.currntRate) > 0 ? "green" : "red";
+    let color_change = "red";
+    if (this.state.currntRate)
+        color_change = this.state.currntRate.charAt(0) === '+' ? "green" : "red";
     return (
       <tr>
         <td>{this.props.id}</td>

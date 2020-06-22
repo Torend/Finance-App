@@ -52,8 +52,7 @@ const getStockDitailes = async (symbol) => {
     return {price: price, rate: regExp.exec(rate)[1]};
   }
   catch (err) {
-    console.log(err);
-    return "price";
+    return err;
   }
 };
 
@@ -69,8 +68,7 @@ const getStockGraph = async (symbol) => {
     return canvas;
   }
   catch (err) {
-    console.log(err);
-    return "price";
+    return err;
   }
 };
 
@@ -90,7 +88,6 @@ const getCurrency = async () => {
     return({usd: usd, eur: eur, gbp: gbp});
   }
   catch (err) {
-    console.log(err);
-    return "price";
+    return err;
   }
 };

@@ -91,10 +91,10 @@ class StockPieGraph extends Component {
 
   render() {
     return (
-      <div className="blur-box" style={{width: 550}}>
+      <div className="blur-box" style={{width: 550, background: "white"}}>
         {this.props.stockList.length === 0 ? (
           <div
-            style={{ background: "white", 
+            style={{ height: 550,
             display : "flex",
             alignItems : "center",
             justifyContent: "center", }}
@@ -103,7 +103,7 @@ class StockPieGraph extends Component {
             <div style={{color: "gray"}}>
               <i
                 className="material-icons prefix"
-                style={{ fontSize: "35px" }}
+                style={{ fontSize: "50px" }}
               >
                 timeline
               </i>
@@ -112,10 +112,10 @@ class StockPieGraph extends Component {
           </div>
         ) :(
     <div className="blur-box" style={{ width: 550}}>
-      <div class="text-center" style={{position: "relative",top: -60 }}>
+      <div class="text-center" style={{position: "relative",top: -40, height:0 }}>
         <h5 class="card-title">Shares chart</h5>
       </div>     
-      <PieChart width={550} height={700} margin={{ top: -68, right: 5, bottom: 5, left: 75}}>
+      <PieChart width={550} height={700} margin={{ top: -45, right: 5, bottom: 5, left: 75}}>
         <Pie
           activeIndex={this.state.activeIndex}
           activeShape={renderActiveShape}
@@ -140,13 +140,21 @@ class StockPieGraph extends Component {
   }
 }
 
+const mapStateToProps = (state) => {
+  return {
+    auth: state.firebase.auth,
+    sellState: state.stock.sellState
+  };
+};
+
+
 export default StockPieGraph;
 
 var styles = `
 .blur-box {
   box-shadow: 0 2px 4px -2px rgba(0,0,0,0.4);
   background-color: white;
-  max-height: 350px;
+  max-height: 325px;
   margin-top: 75px;
 },
 .table-style {

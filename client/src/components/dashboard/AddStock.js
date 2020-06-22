@@ -1,15 +1,41 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Redirect } from "react-router-dom";
-import {addStock, addSuccess} from "../../store/actions/stockActions";
+import {addStock, addSuccess, addExistStock} from "../../store/actions/stockActions";
+import firebase from "../../config/firebaseConfig";
+
 
 class AddStock extends Component {
   state = {
     symbol: "",
     amount: "",
     price: "",
-    submit: null
+    submit: null,
+    stockList: [],
   };
+
+  componentDidMount() {
+    const db = firebase.firestore();
+    db.collection("usersInfo")
+      .doc(this.props.auth.uid)
+      .collection("stocks")
+      .get()
+      .then((querySnapshot) => {
+        if (querySnapshot.size > 0) {
+          let stocks = [];
+          querySnapshot.forEach((doc) => {
+            stocks.push(doc.data());
+          });
+          this.setState({ stockList: stocks });
+        }
+        else
+            this.setState({ stockList: []});
+      })
+      .catch(function (error) {
+        console.log("Error getting document: ", error);
+      });
+  }
+
   handleChange = (e) => {
     this.setState({
       [e.target.id]: e.target.value,
@@ -19,7 +45,21 @@ class AddStock extends Component {
     e.preventDefault();
     if(!(this.state.symbol === "" || this.state.amount === "" || this.state.price === "")){
       this.setState({submit: null})
-      this.props.addStock(this.state)
+      let exists = this.state.stockList.filter(x => x.symbol === this.state.symbol)
+      console.log(exists);
+      if(exists.length > 0){
+        let oldAmount = parseInt(exists[0].amount);
+        let newAmount = parseInt(this.state.amount);
+        let oldPrice = parseFloat(exists[0].price);
+        let newPrice = parseFloat(this.state.price);
+        this.props.addExistStock({
+          symbol: this.state.symbol,
+          newAmount: (oldAmount + newAmount),
+          newPrice: (((oldAmount * oldPrice) + (newAmount * newPrice))/(oldAmount + newAmount)).toFixed(2) //average price
+        })
+      }
+      else
+        this.props.addStock(this.state)
     }
     else this.setState({submit: "You must fill in all the required fields"})
   };
@@ -73,8 +113,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     addStock: (newStock) => dispatch(addStock(newStock)),
-    addSuccess: () => dispatch(addSuccess())
-    //checkSymbol: (symbol) => dispatch(checkSymbol(symbol))
+    addSuccess: () => dispatch(addSuccess()),
+    addExistStock: (stock) => dispatch(addExistStock(stock))
   }
 };
 

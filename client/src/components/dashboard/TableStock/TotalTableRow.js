@@ -21,12 +21,18 @@ class TotalTableRow extends Component {
     });
   }
 
+  componentDidUpdate(prevProps) {
+    if (prevProps.sellState !== this.props.sellState) {
+      this.componentDidMount();
+    }
+  }
+
   returnRate = () => {
     let price = parseFloat(this.props.stock.price);
     let currntPrice = parseFloat(this.state.currntPrice);
-    let returnRate = ((currntPrice - price)/price)*100;
+    let returnRate = ((currntPrice - price) / price) * 100;
     return returnRate.toFixed(2);
-  }
+  };
 
   render() {
     const totalBuyPrice = this.props.stockList.reduce((sum, stock) => {
@@ -37,25 +43,38 @@ class TotalTableRow extends Component {
         let x = this.props.stockList.filter(
           (stock_from_list) => stock.symbol === stock_from_list.symbol
         );
-        return sum + stock.price.express * x[0].amount;
+        if (x.length > 0) return sum + stock.price.express * x[0].amount;
+        else return 0;
       }, 0)
       .toFixed(2);
-      const totalReturnsRate =((currntTotalPrice - totalBuyPrice)/totalBuyPrice*100).toFixed(2);
+    const totalReturnsRate = (
+      ((currntTotalPrice - totalBuyPrice) / totalBuyPrice) *
+      100
+    ).toFixed(2);
 
     const color = totalReturnsRate > 0 ? "#56C37B" : "#C45959";
     return (
       <tr style={{ backgroundColor: color }}>
         <th></th>
         <th></th>
-        <th>Total</th>
-        <th>
-          {totalBuyPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + "$"}
-        </th>     
-        <th>{totalReturnsRate}%</th>
-        <th>
-          {currntTotalPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") +
-            "$"}
-        </th>
+        <td>
+          <b>Total</b>
+        </td>
+        <td>
+          <b>
+            {totalBuyPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") +
+              "$"}
+          </b>
+        </td>
+        <td>
+          <b>{totalReturnsRate}%</b>
+        </td>
+        <td>
+          <b>
+            {currntTotalPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") +
+              "$"}
+          </b>
+        </td>
         <th></th>
         <th></th>
         <th></th>
@@ -65,7 +84,9 @@ class TotalTableRow extends Component {
 }
 
 const mapStateToProps = (state) => {
-  return {};
+  return {
+    sellState: state.stock.sellState,
+  };
 };
 
 export default connect(mapStateToProps)(TotalTableRow);
