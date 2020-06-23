@@ -8,6 +8,7 @@ Exhibit current balance, history transaction, tax, currency rates and other stat
 
 ## Visuals
 
+<img src="https://github.com/Torend/Finance-App/blob/master/client/public/finance-app2.gif" width="50%"/>
 
 
 ## Core Libraries
