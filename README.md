@@ -37,5 +37,5 @@ after download run npm install
 ```bash
 server: node server.js (from the root lib)
 client: cd client
-                npm run/yarn start
+        npm run/yarn start
 ```
