@@ -12,7 +12,7 @@ import {
 } from "recharts";
 import DefaultTooltipContent from "recharts/lib/component/DefaultTooltipContent";
 
-class SalesRecord extends Component {
+class GraphSalesRecord extends Component {
   state = { acc: 0 };
 
   getDate = (stock) => {
@@ -47,7 +47,7 @@ class SalesRecord extends Component {
           },
           {
             name: "Sale",
-            value: props.payload[0].payload.saleProfit+'$',
+            value: props.payload[0].payload.saleProfit + "$",
           },
           ...props.payload,
         ];
@@ -57,12 +57,14 @@ class SalesRecord extends Component {
     };
     let year = new Date(parseInt(this.props.auth.createdAt)).getFullYear();
     let month = new Date(parseInt(this.props.auth.createdAt)).getMonth();
-    let day = new Date(parseInt(this.props.auth.createdAt)).getUTCDate()
+    let day = new Date(parseInt(this.props.auth.createdAt)).getUTCDate();
     let date = day + "/" + month + "/" + year;
-    const data = [{
-      date: date,
-      profit: 0,
-    }];
+    const data = [
+      {
+        date: date,
+        profit: 0,
+      },
+    ];
     let accProfit = 0;
     this.props.salesRecord.forEach((saleRecord) => {
       accProfit = parseInt(this.getProfit(saleRecord)) + accProfit;
@@ -94,6 +96,12 @@ class SalesRecord extends Component {
           </div>
         ) : (
           <div style={{ height: 550 }} className="blur-box text-center">
+            <div
+              class="text-center"
+              style={{ position: "relative", top: -40, height: 0 }}
+            >
+              <h5 class="card-title">Profit over time</h5>
+            </div>
             <LineChart width={500} height={300} data={data}>
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis dataKey="date" />
@@ -118,8 +126,8 @@ class SalesRecord extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    auth: state.firebase.auth
+    auth: state.firebase.auth,
   };
 };
 
-export default connect(mapStateToProps)(SalesRecord);
+export default connect(mapStateToProps)(GraphSalesRecord);

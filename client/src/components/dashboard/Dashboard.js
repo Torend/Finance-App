@@ -4,7 +4,7 @@ import { Redirect } from "react-router-dom";
 import firebase from "../../config/firebaseConfig";
 import StockTable from "./TableStock/StockTable";
 import PieChart from "./StockPieGraph";
-import SalesRecord from "./SalesRecord";
+import GraphSalesRecord from "./GraphSalesRecord";
 import ExchangeRateBar from "./ExchangeRateBar";
 import SalesTable from "./TableSales/SalesTable";
 
@@ -86,7 +86,7 @@ class Dashboard extends Component {
             <SalesTable salesRecord={this.state.salesRecord} />
           </div>        
           <div class="d-md-inline-flex" style={{ marginLeft: 25 }}>
-            <SalesRecord salesRecord={this.state.salesRecord} />
+            <GraphSalesRecord salesRecord={this.state.salesRecord} />
           </div>
         </div>
       </div>

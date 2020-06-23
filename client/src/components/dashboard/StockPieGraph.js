@@ -61,7 +61,7 @@ const renderActiveShape = (props) => {
         y={ey}
         textAnchor={textAnchor}
         fill="#333"
-      >{`Value ${value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")+ "$"}`}</text>
+      >{`Value ${value.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")+ "$"}`}</text>
       <text
         x={ex + (cos >= 0 ? 1 : -1) * 12}
         y={ey}

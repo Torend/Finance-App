@@ -35,7 +35,7 @@ class SalesTable extends Component {
             className="blur-box"
           >
             <div class="text-center" style={{position: "relative", top: -40, height:30}}>
-              <h5 class="card-title">Sales Record</h5>
+              <h5 class="card-title">Sales record</h5>
             </div>
             <table class=" centered table-hover" style={{position: "relative",top:-40, overflow:"hidden", height:"100px"}}>
               <thead>

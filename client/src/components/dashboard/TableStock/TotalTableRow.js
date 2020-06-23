@@ -21,33 +21,28 @@ class TotalTableRow extends Component {
     });
   }
 
-  componentDidUpdate(prevProps) {
-    if (prevProps.sellState !== this.props.sellState) {
-      this.componentDidMount();
-    }
+  totalBuyPrice = () => {
+    return this.props.stockList.reduce((sum, stock) => {
+      return sum + stock.amount * stock.price;
+    }, 0)
+    .toFixed(2);
   }
 
-  returnRate = () => {
-    let price = parseFloat(this.props.stock.price);
-    let currntPrice = parseFloat(this.state.currntPrice);
-    let returnRate = ((currntPrice - price) / price) * 100;
-    return returnRate.toFixed(2);
-  };
+  currntTotalPrice = () => {
+    return this.props.stockList
+    .reduce((sum, stock)=>{
+      let currntPrice = this.state.currntTotalPrice
+      .filter((stock_from_list)=> stock.symbol === stock_from_list.symbol)
+      if (currntPrice.length > 0) return sum + stock.amount * currntPrice[0].price.express;
+      else return 0;
+    }, 0)
+    .toFixed(2);
+  }
 
   render() {
-    const totalBuyPrice = this.props.stockList.reduce((sum, stock) => {
-      return sum + stock.amount * stock.price;
-    }, 0);
-    const currntTotalPrice = this.state.currntTotalPrice
-      .reduce((sum, stock) => {
-        let x = this.props.stockList.filter(
-          (stock_from_list) => stock.symbol === stock_from_list.symbol
-        );
-        if (x.length > 0) return sum + stock.price.express * x[0].amount;
-        else return 0;
-      }, 0)
-      .toFixed(2);
-    const totalReturnsRate = (
+    let totalBuyPrice = this.totalBuyPrice();
+    let currntTotalPrice = this.currntTotalPrice();
+    let totalReturnsRate = (
       ((currntTotalPrice - totalBuyPrice) / totalBuyPrice) *
       100
     ).toFixed(2);
@@ -71,7 +66,7 @@ class TotalTableRow extends Component {
         </td>
         <td>
           <b>
-            {currntTotalPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") +
+            {(currntTotalPrice - totalBuyPrice).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") +
               "$"}
           </b>
         </td>

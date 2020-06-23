@@ -9,7 +9,7 @@ class ExchangeRateBar extends Component {
 
   componentDidMount() {
     this.get_currency();
-    setInterval(this.get_currency, 5000);
+    setInterval(this.get_currency, 3000);
   }
 
   componentWillUnmount() {
