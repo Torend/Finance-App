@@ -8,7 +8,7 @@ Exhibit current balance, history transaction, tax, currency rates and other stat
 
 ## Visuals
 
-<img src="https://github.com/Torend/Finance-App/blob/master/client/public/finance-app2.gif" width="75%"/>
+<img src="https://github.com/Torend/Finance-App/blob/master/client/public/finance-app2.gif" width="85%"/>
 
 
 ## Core Libraries
@@ -35,7 +35,7 @@ Recharts - Charts and graphs
 after download run npm install
 
 ```bash
-run the server: node server.js (from the root lib)
-run the client: cd client
+server: node server.js (from the root lib)
+client: cd client
                 npm run/yarn start
 ```
