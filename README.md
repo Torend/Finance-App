@@ -2,9 +2,13 @@
 
 ## Description
 
-Web App for display yours stock market shares on a real time.
+Web app for managing your stock portfolios and view performance over time, transaction history, daily and total changes.
 
-Exhibit current balance, history transaction, tax, currency rates and other statistics.
+View allocation balance of each stock holding in your overall portfolio with pie charts.
+
+Multiple stocks portfolios support - track multiple stock markets and stock portfolios.
+
+Real-time stock prices and IS exchange rate.
 
 ## Visuals
 
