@@ -36,10 +36,10 @@ Recharts - Charts and graphs
 
 ## Installation
 
-after download run npm install
+run npm install from root & client
 
 ```bash
 server: node server.js (from the root lib)
 client: cd client
-        npm run/yarn start
+        npm start
 ```
